@@ -4,8 +4,10 @@ add_executable(client ${SOURCES})
 
 target_link_libraries(client
     ${Boost_LIBRARIES}
-    ${CMAKE_DL_LIBS}
-    ${CMAKE_THREAD_LIBS_INIT})
+    #${CMAKE_DL_LIBS}
+    ${CMAKE_THREAD_LIBS_INIT}
+    ws2_32
+    mswsock)
 
 if (RT_FOUND)
 	target_link_libraries(client ${RT_LIBRARIES})

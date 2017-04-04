@@ -20,7 +20,14 @@
 #include <bonefish/common/wamp_connection_base.hpp>
 #include <bonefish/trace/trace.hpp>
 
+#ifdef _WIN32
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <Winsock2.h>
+#elif 
 #include <arpa/inet.h>
+#endif
 #include <boost/asio/buffer.hpp>
 #include <boost/asio/error.hpp>
 #include <boost/system/error_code.hpp>

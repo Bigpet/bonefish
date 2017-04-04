@@ -9,8 +9,10 @@ add_dependencies(bonefish_bin bonefish)
 target_link_libraries(bonefish_bin
     bonefish
     ${Boost_LIBRARIES}
-    ${CMAKE_DL_LIBS}
-    ${CMAKE_THREAD_LIBS_INIT})
+#    ${CMAKE_DL_LIBS}
+    ${CMAKE_THREAD_LIBS_INIT}
+    ws2_32
+    mswsock)
 
 if (RT_FOUND)
     target_link_libraries(bonefish_bin ${RT_LIBRARIES})

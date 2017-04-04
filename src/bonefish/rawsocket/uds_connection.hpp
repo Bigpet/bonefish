@@ -14,6 +14,8 @@
  *  limitations under the License.
  */
 
+#ifdef BOOST_ASIO_HAS_LOCAL_SOCKETS
+
 #ifndef BONEFISH_UDS_CONNECTION_HPP
 #define BONEFISH_UDS_CONNECTION_HPP
 
@@ -81,3 +83,4 @@ inline void uds_connection::write(
 } // namespace bonefish
 
 #endif // BONEFISH_UDS_CONNECTION_HPP
+#endif // BOOST_ASIO_HAS_LOCAL_SOCKETS
