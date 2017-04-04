@@ -31,6 +31,9 @@ int main(int argc, char** argv)
         ("help,h", "produce help message")
         ("realm,r", po::value<std::string>(), "set the WAMP realm for this router")
         ("websocket-port,w", po::value<std::uint16_t>()->value_name("<port>"), "enable websocket transport on the given port")
+        ("websocketsecure-port,s", po::value<std::uint16_t>()->value_name("<port>"), "enable websocketsecure transport (websocket over TLS) on the given port")
+        ("websocketsecure-key-path", po::value<std::string>()->value_name("<path>"), "path to the websocketsecure keyfile (pem)")
+        ("websocketsecure-cert-path", po::value<std::string>()->value_name("<path>"), "path to the websocketsecure certificate file (pem)")
         ("rawsocket-port,t", po::value<std::uint16_t>()->value_name("<port>"), "enable rawsocket transport on the given port")
         ("rawsocket-path,u", po::value<std::string>()->value_name("<path>"), "enable rawsocket transport on the given path")
         ("no-json", "disable JSON serialization")
@@ -65,6 +68,18 @@ int main(int argc, char** argv)
     if (variables.count("websocket-port")) {
         options.set_websocket_enabled(true);
         options.set_websocket_port(variables["websocket-port"].as<std::uint16_t>());
+    }
+
+    if (variables.count("websocketsecure-port")) {
+        options.set_websocketsecure_enabled(true);
+        options.set_websocketsecure_port(variables["websocketsecure-port"].as<std::uint16_t>());
+    }
+    
+    if(variables.count("websocketsecure-key-path")) {
+        options.set_websocketsecure_key_path(variables["websocketsecure-key-path"].as<std::string>());
+    }
+    if(variables.count("websocketsecure-cert-path")) {
+        options.set_websocketsecure_cert_path(variables["websocketsecure-cert-path"].as<std::string>());
     }
 
     if (variables.count("rawsocket-port")) {

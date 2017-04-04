@@ -33,6 +33,7 @@ class rawsocket_server;
 class wamp_routers;
 class wamp_serializers;
 class websocket_server;
+class websocketsecure_server;
 
 class daemon
 {
@@ -58,8 +59,11 @@ private:
     std::shared_ptr<bonefish::wamp_serializers> m_serializers;
     std::shared_ptr<bonefish::rawsocket_server> m_rawsocket_server;
     std::shared_ptr<bonefish::websocket_server> m_websocket_server;
+    std::shared_ptr<bonefish::websocketsecure_server> m_websocketsecure_server;
 
     std::uint16_t m_websocket_port;
+    std::uint16_t m_websocketsecure_port;
+    
 };
 
 } // namespace bonefish

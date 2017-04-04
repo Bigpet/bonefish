@@ -27,6 +27,7 @@
 #include <bonefish/rawsocket/uds_listener.hpp>
 #include <bonefish/trace/trace.hpp>
 #include <bonefish/websocket/websocket_server.hpp>
+#include <bonefish/websocketsecure/websocketsecure_server.hpp>
 
 #include <boost/asio/ip/address.hpp>
 #include <boost/bind.hpp>
@@ -48,7 +49,9 @@ daemon::daemon(const daemon_options& options)
     , m_serializers(std::make_shared<wamp_serializers>())
     , m_rawsocket_server()
     , m_websocket_server()
+    , m_websocketsecure_server()
     , m_websocket_port(0)
+    , m_websocketsecure_port(0)
 {
     std::vector<std::string> problems = options.problems();
     if (!problems.empty()) {
@@ -80,6 +83,13 @@ daemon::daemon(const daemon_options& options)
                 m_io_service, m_routers, m_serializers);
         m_websocket_port = options.websocket_port();
     }
+    
+    if (options.is_websocketsecure_enabled()) {
+        m_websocketsecure_server = std::make_shared<websocketsecure_server>(
+                m_io_service, m_routers, m_serializers, options.websocketsecure_key_path(), options.websocketsecure_cert_path());
+        m_websocketsecure_port = options.websocketsecure_port();
+    }
+
 
     if (options.is_rawsocket_enabled()) {
         m_rawsocket_server = std::make_shared<rawsocket_server>(m_routers, m_serializers);
@@ -88,11 +98,13 @@ daemon::daemon(const daemon_options& options)
                     m_io_service, boost::asio::ip::address(), options.rawsocket_port());
             m_rawsocket_server->attach_listener(std::static_pointer_cast<rawsocket_listener>(listener));
         }
+#ifdef BOOST_ASIO_HAS_LOCAL_SOCKETS
         if (!options.rawsocket_path().empty()) {
             auto listener = std::make_shared<uds_listener>(
                     m_io_service, options.rawsocket_path());
             m_rawsocket_server->attach_listener(std::static_pointer_cast<rawsocket_listener>(listener));
         }
+#endif
     }
 }
 
@@ -113,6 +125,10 @@ void daemon::run()
 
     if (m_websocket_server) {
         m_websocket_server->start(boost::asio::ip::address(), m_websocket_port);
+    }
+
+    if (m_websocketsecure_server) {
+        m_websocketsecure_server->start(boost::asio::ip::address(), m_websocketsecure_port);
     }
 
     m_io_service.run();
@@ -137,6 +153,9 @@ void daemon::shutdown_handler()
 
         if (m_websocket_server) {
             m_websocket_server->shutdown();
+        }
+        if (m_websocketsecure_server) {
+            m_websocketsecure_server->shutdown();
         }
         if (m_rawsocket_server) {
             m_rawsocket_server->shutdown();

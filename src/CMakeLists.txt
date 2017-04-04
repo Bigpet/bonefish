@@ -32,7 +32,12 @@ set(SOURCES
     bonefish/websocket/websocket_protocol.cpp
     bonefish/websocket/websocket_server.cpp
     bonefish/websocket/websocket_server_impl.cpp
-    bonefish/websocket/websocket_transport.cpp)
+    bonefish/websocket/websocket_transport.cpp
+    bonefish/websocketsecure/websocketsecure_protocol.cpp
+    bonefish/websocketsecure/websocketsecure_server.cpp
+    bonefish/websocketsecure/websocketsecure_server_impl.cpp
+    bonefish/websocketsecure/websocketsecure_transport.cpp
+    )
 
 set(PUBLIC_HEADERS
     bonefish/native/native_connector.hpp
@@ -52,7 +57,9 @@ set(PUBLIC_HEADERS
     bonefish/serialization/wamp_serializer.hpp
     bonefish/serialization/wamp_serializers.hpp
     bonefish/trace/trace.hpp
-    bonefish/websocket/websocket_server.hpp)
+    bonefish/websocket/websocket_server.hpp
+    bonefish/websocketsecure/websocketsecure_server.hpp
+    )
 
 set(PRIVATE_HEADERS
     bonefish/broker/wamp_broker.hpp
@@ -129,7 +136,11 @@ set(PRIVATE_HEADERS
     bonefish/websocket/websocket_config.hpp
     bonefish/websocket/websocket_protocol.hpp
     bonefish/websocket/websocket_server_impl.hpp
-    bonefish/websocket/websocket_transport.hpp)
+    bonefish/websocket/websocket_transport.hpp
+    bonefish/websocketsecure/websocketsecure_config.hpp
+    bonefish/websocketsecure/websocketsecure_protocol.hpp
+    bonefish/websocketsecure/websocketsecure_server_impl.hpp
+    bonefish/websocketsecure/websocketsecure_transport.hpp)
 
 add_library(bonefish STATIC ${SOURCES} ${PUBLIC_HEADERS} ${PRIVATE_HEADERS})
 
